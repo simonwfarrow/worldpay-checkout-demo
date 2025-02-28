@@ -1,46 +1,132 @@
-# Getting Started with Create React App
+# Worldpay Checkout Demo
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project demonstrates the integration of Worldpay's checkout SDK into a React application with a Node.js backend for secure payment processing.
 
-## Available Scripts
+## Project Structure
 
-In the project directory, you can run:
+The project is organized as a monorepo with two main components:
+- `client/`: React frontend application
+- `server/`: Node.js/Express backend API
 
-### `npm start`
+## Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- Secure card data capture using Worldpay's hosted fields
+- PCI-compliant payment form
+- Card validation and formatting
+- Session generation for payment processing
+- Backend API for processing payments with Worldpay
+- Full-stack implementation with React frontend and Express backend
+- Detailed payment response display with card information
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Implementation Details
 
-### `npm test`
+The application uses the Worldpay checkout SDK to create a secure payment form. The SDK handles the sensitive card data, ensuring that the application remains PCI compliant.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Key components:
+- **Frontend** (in `client/` directory):
+  - `src/components/CheckoutForm.tsx`: The main component that integrates with the Worldpay SDK
+  - `src/services/paymentService.ts`: Service for communicating with the backend API
+  - Type definitions for TypeScript support
+  - Styling for a professional payment form
 
-### `npm run build`
+- **Backend** (in `server/` directory):
+  - Express.js server with TypeScript
+  - RESTful API endpoints for payment processing
+  - Integration with Worldpay payment API using session tokens
+  - Secure handling of payment credentials
+  - Detailed payment response formatting
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Getting Started
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Quick Start
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Use the setup script to install dependencies and start both servers:
+```
+./setup.sh
+```
 
-### `npm run eject`
+### Manual Setup
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+1. Clone the repository
+2. Install all dependencies:
+   ```
+   npm run install:all
+   ```
+3. Start both frontend and backend servers:
+   ```
+   npm start
+   ```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Individual Component Setup
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+#### Frontend
+1. Navigate to the client directory:
+   ```
+   cd client
+   ```
+2. Install dependencies:
+   ```
+   npm install
+   ```
+3. Start the development server:
+   ```
+   npm start
+   ```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+#### Backend
+1. Navigate to the server directory:
+   ```
+   cd server
+   ```
+2. Install dependencies:
+   ```
+   npm install
+   ```
+3. Build the TypeScript code:
+   ```
+   npm run build
+   ```
+4. Start the server:
+   ```
+   npm run dev
+   ```
 
-## Learn More
+## How It Works
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+1. The Worldpay SDK is loaded dynamically when the checkout component mounts
+2. The SDK creates secure iframes for card number, expiry date, and CVV fields
+3. When the user clicks "Pay Now", the SDK creates a secure token (session)
+4. This token is sent to the backend API along with payment details
+5. The backend processes the payment using the Worldpay API
+6. The result is returned to the frontend and displayed to the user, including:
+   - Transaction ID and authorization code
+   - Card details (brand, last 4 digits, expiry)
+   - Available payment actions (settle, cancel)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Configuration
+
+### Frontend
+- The checkout is configured with the checkout ID: `de71d389-ac4b-43c5-b632-5a82bdf19eaf`
+- To use a different checkout ID, update the value in the `client/.env` file:
+  ```
+  REACT_APP_WORLDPAY_CHECKOUT_ID=your_checkout_id
+  ```
+- Other frontend environment variables in `client/.env`:
+  ```
+  REACT_APP_WORLDPAY_ENVIRONMENT=sandbox  # Change to 'production' for live payments
+  REACT_APP_API_URL=http://localhost:4000/api
+  ```
+
+### Backend
+- Server port and other settings can be configured in the `server/.env` file
+- Worldpay API credentials should be set in the `server/.env` file:
+  ```
+  WORLDPAY_USERNAME=your_worldpay_username
+  WORLDPAY_PASSWORD=your_worldpay_password
+  ```
+
+## Resources
+
+- [Worldpay Developer Documentation](https://developer.worldpay.com/)
+- [React Documentation](https://reactjs.org/docs/getting-started.html)
+- [Express Documentation](https://expressjs.com/)
